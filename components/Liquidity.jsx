@@ -245,6 +245,7 @@ export default function Liquidity() {
     },[isWeb3Enabled])
 
 
+
     const [tokenAAllowance, setTokenAAllowance] = useState("0");
     useEffect(() => {
         if(isWeb3Enabled) {
@@ -256,7 +257,6 @@ export default function Liquidity() {
             fetchTokenAAllowance();
         }
     }, [isWeb3Enabled]);
-
 
     const [tokenBAllowance, setTokenBAllowance] = useState("0");
     useEffect(() => {
@@ -270,18 +270,36 @@ export default function Liquidity() {
         }
     }, [isWeb3Enabled]);
 
+    async function handleTokenApproval() {
+        await approveTokenA({
+            onSuccess: handleSuccess,
+            onError: handleFailure
+        });
+        setTokenAAllowance("1.0")
+        await approveTokenB({
+            onSuccess: handleSuccess,
+            onError: handleFailure
+        });
+        setTokenBAllowance("1.0")
+    }
+    
+
+
 
     const [lpAllowance, setLPAllowance] = useState("0");
+    async function fetchLPAllowance() {
+        var lpAllowanceFromCall = await getLPAllowance();
+        setLPAllowance(ethers.utils.formatUnits(lpAllowanceFromCall, "ether"))
+    }
+    async function handleLPApproval() {
+        await lpApprove({onSuccess: handleSuccess, onError: handleFailure});
+        setLPAllowance("1.0")
+    }
     useEffect(() => {
         if(isWeb3Enabled){
-            async function fetchLPAllowance() {
-                var lpAllowanceFromCall = await getLPAllowance();
-                setLPAllowance(ethers.utils.formatUnits(lpAllowanceFromCall, "ether"))
-
-            }
             fetchLPAllowance();
         }
-    }, [isWeb3Enabled])
+    }, [isWeb3Enabled]);
 
 
     // Handle user input for adding liquidity
@@ -317,10 +335,9 @@ export default function Liquidity() {
         await tx.wait(1);
         await updateUIBalances()
         console.log("Tx Hash: " + tx.hash)
-        handleNewNotification(tx);
+        handleNewSuccessNotification(tx);
     }
-
-    const handleNewNotification = (tx) => {
+    const handleNewSuccessNotification = (tx) => {
         dispatch({
             type: "info",
             message: `Transaction Complete!\n${tx.hash}`,
@@ -329,11 +346,23 @@ export default function Liquidity() {
         })
     }
 
+    const handleFailure = async (tx) => {
+        handleNewFailureNotification(tx)
+    }
+    const handleNewFailureNotification = (tx) => {
+        dispatch({
+            type: "error",
+            message: `Transaction Failure!\n${tx.data.message}`,
+            title: "Tx Notification",
+            position: "topR"
+        })
+    }
+
     const chartData = {
         labels: ['Token A', 'Token B'],
         datasets: [
           {
-            label: '# of Votes',
+            label: 'Liquidity',
             data: [totalBalanceA, totalBalanceB],
             backgroundColor: [
               'rgba(54, 162, 235, 0.5)',
@@ -362,19 +391,12 @@ export default function Liquidity() {
                         <button onClick={async () => { 
                             await addSwapLiquidity({
                                 onSuccess: handleSuccess,
-                                onError: (error) => console.log(error)
+                                onError: handleFailure
                             })
                         }} disabled={addLiquidityIsLoading || addLiquidityIsFetching }>Add liquidity</button>
                     ) : (
                         <button onClick={async() => {
-                            await approveTokenA({
-                                onSuccess: handleSuccess,
-                                onError: (error) => console.log(error)
-                            });
-                            await approveTokenB({
-                                onSuccess: handleSuccess,
-                                onError: (error) => console.log(error)
-                            })
+                            await handleTokenApproval();
                         }} disabled={
                             isLoadingApproveTokenA || 
                             isFetchingApproveTokenA ||
@@ -389,13 +411,14 @@ export default function Liquidity() {
                 {parseFloat(lpAllowance) > 0.0 ? (
                     <button onClick={async () => {
                         await removeTokenLiquidity({
-                            onSuccess: handleSuccess
+                            onSuccess: handleSuccess,
+                            onError: handleFailure
                         })
-                    }}>Remove Liquidity</button>
+                    }} disabled={isLoadingRemovingLiquidity || isFetchingRemovingLiquidity}>Remove Liquidity</button>
                 ) : (
                     <button onClick={async () => {
-                        await lpApprove({onSuccess: handleSuccess})
-                    }}>Approve LP Tokens</button>
+                        await handleLPApproval();
+                    }} disabled={isLoadingApproveLP || isFetchingApproveLP}>Approve LP Tokens</button>
                 )}
                 
                 <div> Token A: {tokenABalance} </div> {/* Could do more to make this dynamic by getting symbols, names etc from tokens..*/}

@@ -20,8 +20,9 @@ export default function Home() {
       </Head>
       <Header>
       </Header>
-      {/* <Liquidity/> */}
       <Swap/>
+      <Liquidity/>
+
 
     </div>
   )
