@@ -284,8 +284,7 @@ export default function Liquidity() {
     }
     
 
-
-
+    
     const [lpAllowance, setLPAllowance] = useState("0");
     async function fetchLPAllowance() {
         var lpAllowanceFromCall = await getLPAllowance();
