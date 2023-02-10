@@ -9,6 +9,7 @@ import Low from "./images/1.low.jpg"
 import Medium from "./images/2.medium.jpg"
 import High from "./images/3.high.jpg"
 import Dp from "./images/dp.jpg"
+import Footer from "../components/Footer"
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,7 +18,7 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>Welcome to My World</title>
+        <title>CRYP70 - Welcome to My World</title>
         <meta name="description" content="Smart Contract to swap tokens and add liquidity" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -87,6 +88,10 @@ export default function Home() {
           </div>
         </div>
       </section>
+      
+      <Footer/>
     </div>
+
+    
   )
 }
