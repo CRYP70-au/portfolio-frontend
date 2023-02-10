@@ -1,27 +1,17 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from '@next/font/google'
-import styles from '@/styles/Home.module.css'
-//import Header from "../components/ManualHeader";
 import Header from "../components/Header";
-import Liquidity from '@/components/Liquidity';
-import {utils} from "ethers";
-import Swap from "../components/Swap"
 import { CodeArea } from "web3uikit";
-
+import Link from "next/link";
+import BlogLink from "../components/homepage/BlogLink"
+import Low from "./images/1.low.jpg"
+import Medium from "./images/2.medium.jpg"
+import High from "./images/3.high.jpg"
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
-
-  const text = "[common]\n\
-  server_addr = onfkgi4pc9ld.moralis.io\n\
-  server_port = 7000\n\
-  token = KKKaDjYz0i\n\
-[hardhat]\n\
-  type = http\n\
-  local_port = 8545\n\
-  custom_domains = onfkgi4pc9ld.moralis.io"
 
   return (
     <div>
@@ -33,24 +23,52 @@ export default function Home() {
       <Header>
       </Header>
 
+      <section class="text-gray-600 body-font">
 
-      <h2>Publicly Disclosed Web3 Scurity Findings</h2>
+        <div class="container px-5 py-10 mx-auto">
+        <div class="py-5">
+          <h3 class="title-font font-medium text-lg text-gray-900">Publicly Disclosed Web3 Security Findings</h3>
+        </div>
+          <div class="flex flex-wrap -m-4">
+              <BlogLink 
+                name="MEDIUM" 
+                description="Code4rena - Caviar - Base tokens in pair contract are assumed to have 1e18 decimals" 
+                link="https://github.com/code-423n4/2022-12-caviar-findings/issues/277" 
+                image={Medium}/>
 
-      <div>HIGH - Some random function was broken</div>
-      <CodeArea
-          maxHeight="50px"
-          onBlur={function noRefCheck(){}}
-          onChange={function noRefCheck(){}}
-          text={text}
-          disabled={true}
-          maxWidth="1000px"
-      />
+              <BlogLink 
+                name="MEDIUM" 
+                description="Code4rena - Caviar - Flaw in pair contract allows users to get free fractional tokens" 
+                link="https://github.com/code-423n4/2022-12-caviar-findings/issues/276"
+                image={Medium}/>
+              
+              <BlogLink 
+                name="HIGH" 
+                description="Code4rena - Caviar - Critical flaw in providing liquidity results in an immediate loss of funds" 
+                link="https://github.com/code-423n4/2022-12-caviar-findings/issues/278"
+                image={High}/>
+          </div>
+          <div class="flex flex-wrap -m-4">
+              <BlogLink 
+                name="MEDIUM" 
+                description="Sherlock - MyCelium - Block future investors from receiving myLink causing a dos condition" 
+                link="https://github.com/sherlock-audit/2022-10-mycelium-judging/blob/main/029-M/035.md" 
+                image={Medium}/>
 
-
-      {/* <Swap/> */}
-      {/* <Liquidity/> */}
-
-
+              <BlogLink 
+                name="MEDIUM" 
+                description="Sherlock - MyCelium - Users can be rugged by the admin user" 
+                link="https://github.com/sherlock-audit/2022-10-mycelium-judging/blob/main/low-info/008-M/031.md"
+                image={Low}/>
+              
+              <BlogLink 
+                name="HIGH" 
+                description="Sherlock - Opyn - usdcAmount will be incorrect in WithdrawAuction() when attempting to transfer proportionate amount" 
+                link="https://github.com/sherlock-audit/2022-11-opyn-judging/blob/main/008-H/103.md"
+                image={High}/>
+          </div>
+        </div>
+      </section>
     </div>
   )
 }

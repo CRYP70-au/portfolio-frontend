@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useMoralis, useWeb3Contract } from "react-moralis"
-import {contractAddresses, abiSwap, abiToken} from "../constants";
+import {contractAddresses, abiSwap, abiToken} from "../../constants";
 import { ethers } from 'ethers'
 import {Input} from "web3uikit";
 const {MaxUint256} = require("@ethersproject/constants");
@@ -22,6 +22,7 @@ export default function Liquidity() {
     const { chainId: chainIdHex, isWeb3Enabled, account } = useMoralis();
     const chainId = parseInt(chainIdHex);
     const simpleSwapAddress = chainId in contractAddresses ? contractAddresses[chainId][0] : null
+    console.log(simpleSwapAddress)
     const tokenAAddress = chainId in contractAddresses ? contractAddresses[chainId][1] : null
     const tokenBAddress = chainId in contractAddresses ? contractAddresses[chainId][2] : null
 
@@ -221,22 +222,27 @@ export default function Liquidity() {
     const [tokenBBalance, setTokenBBalance] = useState("0");
 
     async function updateUIBalances() {
-        var tokenABalanceFromCall;
-        var tokenBBalanceFromCall;
-        [tokenABalanceFromCall, tokenBBalanceFromCall] = await getLPBalance(); // Tokens
-        setTokenABalance(ethers.utils.formatUnits(tokenABalanceFromCall, "ether"));
-        setTokenBBalance(ethers.utils.formatUnits(tokenBBalanceFromCall, "ether"));
+        try {
+            var tokenABalanceFromCall;
+            var tokenBBalanceFromCall;
+            [tokenABalanceFromCall, tokenBBalanceFromCall] = await getLPBalance(); // Tokens
+            setTokenABalance(ethers.utils.formatUnits(tokenABalanceFromCall, "ether"));
+            setTokenBBalance(ethers.utils.formatUnits(tokenBBalanceFromCall, "ether"));
+    
+            var lpBalanceFromCall = await getLPTokenBalance(); // Liquidity provider tokens
+            setLPBalance(ethers.utils.formatUnits(lpBalanceFromCall, "ether"));
+    
+            // Update pool balances
+    
+            var totalBalanceAFromCall = await getPoolBalanceA();
+            setTotalBalanceA(ethers.utils.formatUnits(totalBalanceAFromCall, "ether"));
+    
+            var totalBalanceBFromCall = await getPoolBalanceB();
+            setTotalBalanceB(ethers.utils.formatUnits(totalBalanceBFromCall, "ether"));
+        } catch(error) {
+            console.log(error);
+        }
 
-        var lpBalanceFromCall = await getLPTokenBalance(); // Liquidity provider tokens
-        setLPBalance(ethers.utils.formatUnits(lpBalanceFromCall, "ether"));
-
-        // Update pool balances
-
-        var totalBalanceAFromCall = await getPoolBalanceA();
-        setTotalBalanceA(ethers.utils.formatUnits(totalBalanceAFromCall, "ether"));
-
-        var totalBalanceBFromCall = await getPoolBalanceB();
-        setTotalBalanceB(ethers.utils.formatUnits(totalBalanceBFromCall, "ether"));
     }      
     useEffect(() => {
         if(isWeb3Enabled) {
@@ -251,8 +257,14 @@ export default function Liquidity() {
         if(isWeb3Enabled) {
             async function fetchTokenAAllowance() {
                 var tokenAAllowanceFromCall;
-                tokenAAllowanceFromCall = await getTokenAAllowance();
-                setTokenAAllowance(ethers.utils.formatUnits(tokenAAllowanceFromCall, "ether"))
+                try {
+                    tokenAAllowanceFromCall = await getTokenAAllowance();
+                    setTokenAAllowance(ethers.utils.formatUnits(tokenAAllowanceFromCall, "ether"))
+                } catch(error) {
+                    console.log(error)
+                    console.log("SimpleSwap contracts unreachable!")
+                }
+
             }
             fetchTokenAAllowance();
         }
@@ -263,8 +275,14 @@ export default function Liquidity() {
         if(isWeb3Enabled) {
             async function fetchTokenBAllowance() {
                 var tokenBAllowanceFromCall;
-                tokenBAllowanceFromCall = await getTokenBAllowance();
-                setTokenBAllowance(ethers.utils.formatUnits(tokenBAllowanceFromCall, "ether"))
+                try {
+                    tokenBAllowanceFromCall = await getTokenBAllowance();
+                    setTokenBAllowance(ethers.utils.formatUnits(tokenBAllowanceFromCall, "ether"))
+                } catch(error) {
+                    console.log(error)
+                    console.log("SimpleSwap contracts unreachable!")
+                }
+
             }
             fetchTokenBAllowance();
         }
@@ -287,8 +305,14 @@ export default function Liquidity() {
     
     const [lpAllowance, setLPAllowance] = useState("0");
     async function fetchLPAllowance() {
-        var lpAllowanceFromCall = await getLPAllowance();
-        setLPAllowance(ethers.utils.formatUnits(lpAllowanceFromCall, "ether"))
+        try {
+            var lpAllowanceFromCall = await getLPAllowance();
+            setLPAllowance(ethers.utils.formatUnits(lpAllowanceFromCall, "ether"))
+        } catch(error) {
+            console.log(error)
+            console.log("SimpleSwap contracts unreachable!")
+        }
+
     }
     async function handleLPApproval() {
         await lpApprove({onSuccess: handleSuccess, onError: handleFailure});
@@ -349,9 +373,16 @@ export default function Liquidity() {
         handleNewFailureNotification(tx)
     }
     const handleNewFailureNotification = (tx) => {
+        var message = "";
+        if(tx.data){
+            message = `Transaction Failure!\n${tx.data.message}`    
+        } 
+        else {
+            message = "Transaction Rejected!"
+        }
         dispatch({
             type: "error",
-            message: `Transaction Failure!\n${tx.data.message}`,
+            message: message,
             title: "Tx Notification",
             position: "topR"
         })

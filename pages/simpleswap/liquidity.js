@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { Inter } from '@next/font/google'
-import Header from "../../components/SimpleSwapHeader";
-import Liquidity from "../../components/Liquidity"
+import Header from "../../components/simpleswap/SimpleSwapHeader";
+import Liquidity from "../../components/simpleswap/Liquidity"
 
 
 export default function SSLiquidity() {

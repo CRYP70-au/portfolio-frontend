@@ -1,9 +1,10 @@
 import Head from 'next/head'
+import { Inter } from '@next/font/google'
+import Faucet from "../../components/simpleswap/Faucet";
 import Header from "../../components/simpleswap/SimpleSwapHeader";
-import Swap from "../../components/simpleswap/Swap";
 
 
-export default function SSSwap() {
+export default function SSFaucet() {
 
   return (
     <div>
@@ -13,7 +14,8 @@ export default function SSSwap() {
             <link rel="icon" href="/favicon.ico" />
         </Head>
         <Header/>
-      <Swap/> 
+        <Faucet/>
+        
     </div>
   )
 }

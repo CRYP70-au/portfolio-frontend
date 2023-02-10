@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useMoralis, useWeb3Contract } from "react-moralis"
-import {contractAddresses, abiSwap, abiToken} from "../constants";
+import {contractAddresses, abiSwap, abiToken} from "../../constants";
 import { ethers } from 'ethers'
 import {Input, Button} from "web3uikit";
 const {MaxUint256} = require("@ethersproject/constants");
@@ -19,10 +19,6 @@ export default function Swap(){
 
     const dispatch = useNotification();
 
-    // Need:
-    // -     function swap(uint256 tokenAIn,uint256 tokenBIn,uint256 minTokenBOut,uint256 minTokenAOut)
-    // -     function getTokenAPrice(uint256 tokenBAmount)
-    // -     function getTokenBPrice(uint256 tokenAAmount)
 
     const [tokenAIn, setTokenAIn] = useState("0");
     const [tokenBIn, setTokenBIn] = useState("0");
@@ -266,42 +262,47 @@ export default function Swap(){
 
     return (
         <div>
-
             <h3>Swap</h3>
-            {inputSwapped ? ( 
+            {simpleSwapAddress ? (
                 <div>
-                    <Input onChange={(event) => {updateAmountAIn((event.target.value != "" ? (event.target.value) : ("0.0")))}} type="number" value="0.0" step="0.1" label="Token A" disabled={isLoadingTokenAPrice || isFetchingTokenAPrice}/>
-                    <button onClick={
-                        () => {setInputSwapped(!inputSwapped)}
-                    }>change</button>
-                    <Input onChange={(event) => {}} type="number" value={tokenAPrice} step="0.1" label="Token B"/> 
-                    <div>Min Tokens Out</div>
-                    <Input onChange={(event) => {updateMinTokenBOut(event.target.value != "" ? (event.target.value) : ("0.0"))}} value="0.0" type="number" step="0.1"/>
-                </div>
-            ) : (     
-                <div>       
-                    <Input onChange={(event) => {updateAmountBIn((event.target.value != "" ? (event.target.value) : ("0.0")))}} type="number" value="0.0" step="0.1" label="Token B" disabled={isLoadingTokenBPrice || isFetchingTokenBPrice}/>
-                    <button onClick={
-                        (event) => {setInputSwapped(!inputSwapped)}
-                    }>change</button>
-                    <Input onChange={(event) => {}} type="number" value={tokenBPrice} step="0.1" label="Token A"/> 
-                    <div>Min Tokens Out</div>
-                    <Input onChange={(event) => {updateMinTokenAOut(event.target.value != "" ? (event.target.value) : ("0.0"))}} value="0.0" type="number" step="0.1"/>
+                    {inputSwapped ? ( 
+                        <div>
+                            <Input onChange={(event) => {updateAmountAIn((event.target.value != "" ? (event.target.value) : ("0.0")))}} type="number" value="0.0" step="0.1" label="Token A" disabled={isLoadingTokenAPrice || isFetchingTokenAPrice}/>
+                            <button onClick={
+                                () => {setInputSwapped(!inputSwapped)}
+                            }>change</button>
+                            <Input onChange={(event) => {}} type="number" value={tokenAPrice} step="0.1" label="Token B"/> 
+                            <div>Min Tokens Out</div>
+                            <Input onChange={(event) => {updateMinTokenBOut(event.target.value != "" ? (event.target.value) : ("0.0"))}} value="0.0" type="number" step="0.1"/>
+                        </div>
+                    ) : (     
+                        <div>       
+                            <Input onChange={(event) => {updateAmountBIn((event.target.value != "" ? (event.target.value) : ("0.0")))}} type="number" value="0.0" step="0.1" label="Token B" disabled={isLoadingTokenBPrice || isFetchingTokenBPrice}/>
+                            <button onClick={
+                                (event) => {setInputSwapped(!inputSwapped)}
+                            }>change</button>
+                            <Input onChange={(event) => {}} type="number" value={tokenBPrice} step="0.1" label="Token A"/> 
+                            <div>Min Tokens Out</div>
+                            <Input onChange={(event) => {updateMinTokenAOut(event.target.value != "" ? (event.target.value) : ("0.0"))}} value="0.0" type="number" step="0.1"/>
 
-                </div>
-            )}
+                        </div>
+                    )}
 
-            {parseFloat(tokenAAllowance) > 0.0 && parseFloat(tokenBAllowance) > 0.0 ? (
-                <button onClick={async () => {await swap({ onSuccess: handleSuccess, onError: handleFailure })}} disabled={isLoadingSwap || isFetchingSwap}>Swap</button>
+                    {parseFloat(tokenAAllowance) > 0.0 && parseFloat(tokenBAllowance) > 0.0 ? (
+                        <button onClick={async () => {await swap({ onSuccess: handleSuccess, onError: handleFailure })}} disabled={isLoadingSwap || isFetchingSwap}>Swap</button>
+                    ) : (
+                        <button onClick={async () => {
+                            await handleTokenApproval()
+                        }} disabled={
+                            isLoadingApproveTokenA || 
+                            isFetchingApproveTokenA ||
+                            isLoadingApproveTokenB || 
+                            isFetchingApproveTokenB
+                        }>Approve Tokens</button>
+                    )}
+                </div>
             ) : (
-                <button onClick={async () => {
-                    await handleTokenApproval()
-                }} disabled={
-                    isLoadingApproveTokenA || 
-                    isFetchingApproveTokenA ||
-                    isLoadingApproveTokenB || 
-                    isFetchingApproveTokenB
-                }>Approve Tokens</button>
+                <div>No Swap Contract Address Detected</div>
             )}
         </div>
     )
