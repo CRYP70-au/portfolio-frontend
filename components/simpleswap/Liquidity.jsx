@@ -402,63 +402,79 @@ export default function Liquidity() {
           },
         ],
       };
-
+    
     return (
-        <div>
-            {simpleSwapAddress ? (
-                <div>
-                    <h3>Pool Liquidity</h3>
-                    <div>Token A Pool Balance: {totalBalanceA}</div>
-                    <div>Token B Pool Balance: {totalBalanceB}</div>
-                    <div>
+        <section class="text-gray-600 body-font">
+            <div class="container px-5 py-24 mx-auto flex flex-wrap">
+                <div class="lg:w-1/2 w-full mb-10 lg:mb-0 rounded-lg overflow-hidden">
                     <PolarArea data={chartData} width={700} height={325} options={{ maintainAspectRatio: false }} />
+                </div>
+                <div class="flex flex-col flex-wrap lg:py-6 -mb-10 lg:w-1/2 lg:pl-12 lg:text-left text-center">
+
+                <div>
+                {simpleSwapAddress ? (
+                    <div class="flex flex-col flex-wrap lg:py-6 -mb-10 lg:w-1/2 lg:pl-12 lg:text-left text-center">
+                        <h3 class="text-gray-900 text-lg title-font font-medium mb-3">Add Liquidity</h3>
+                        <div class="flex flex-col flex-wrap lg:py-6 -mb-10 lg:text-left text-center" >
+                            <div class="flex mb-10">
+                                <Input onChange={(event) => {updateAmountA(event.target.value)}} type="number" value="0" min="0" step="0.1" label="Token A"/>
+                            </div>
+                            <div class="flex mb-10">
+                                <Input onChange={(event) => {updateAmountB(event.target.value)}} type="number" value="0" min="0" step="0.1" label="Token B"/>
+                            </div>
+                            {parseFloat(tokenAAllowance) > 0.0 && parseFloat(tokenBAllowance) > 0.0 ? (
+                                <button class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded" onClick={async () => { 
+                                    await addSwapLiquidity({
+                                        onSuccess: handleSuccess,
+                                        onError: handleFailure
+                                    })
+                                }} disabled={addLiquidityIsLoading || addLiquidityIsFetching }>Add liquidity</button>
+                            ) : (
+                                <button class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded" onClick={async() => {
+                                    await handleTokenApproval();
+                                }} disabled={
+                                    isLoadingApproveTokenA || 
+                                    isFetchingApproveTokenA ||
+                                    isLoadingApproveTokenB || 
+                                    isFetchingApproveTokenB
+                                }>Approve Tokens</button>
+                            )}
+                        </div>
+
+                        <h3 class="text-gray-900 text-lg title-font font-medium mb-3 mt-20">Remove Liquidity</h3>
+                        <div class="flex flex-col flex-wrap lg:py-6 -mb-10 lg:text-left text-center">
+                        <div class="flex mb-10">
+                            <Input onChange={(event) => {updateAOut(event.target.value)}} type="number" value="0.0" min="0" step="0.1" label="Token A"/>
+                        </div>
+                        <div class="flex mb-10">
+                            <Input onChange={(event) => {updateBOut(event.target.value)}} type="number" value="0.0" min="0" step="0.1" label="Token B"/>
+                        </div>
+                        {parseFloat(lpAllowance) > 0.0 ? (
+                            <button class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"  onClick={async () => {
+                                await removeTokenLiquidity({
+                                    onSuccess: handleSuccess,
+                                    onError: handleFailure
+                                })
+                            }} disabled={isLoadingRemovingLiquidity || isFetchingRemovingLiquidity}>Remove Liquidity</button>
+                        ) : (
+                            <button class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded" onClick={async () => {
+                                await handleLPApproval();
+                            }} disabled={isLoadingApproveLP || isFetchingApproveLP}>Approve LP</button>
+                        )}
+                        </div>
+                        
+                        <div class="leading-relaxed text-base"> Token A: {tokenABalance} </div> {/* Could do more to make this dynamic by getting symbols, names etc from tokens..*/}
+                        <div class="leading-relaxed text-base"> Token B: {tokenBBalance} </div> 
+                        <div class="leading-relaxed text-base"> LP Tokens: {lpBalance}</div>
                     </div>
 
-                    <h3>Add Liquidity</h3>
-                    <Input onChange={(event) => {updateAmountA(event.target.value)}} type="number" value="0" min="0" step="0.1" label="Token A"/>
-                    <Input onChange={(event) => {updateAmountB(event.target.value)}} type="number" value="0" min="0" step="0.1" label="Token B"/>
-                    {parseFloat(tokenAAllowance) > 0.0 && parseFloat(tokenBAllowance) > 0.0 ? (
-                        <button onClick={async () => { 
-                            await addSwapLiquidity({
-                                onSuccess: handleSuccess,
-                                onError: handleFailure
-                            })
-                        }} disabled={addLiquidityIsLoading || addLiquidityIsFetching }>Add liquidity</button>
-                    ) : (
-                        <button onClick={async() => {
-                            await handleTokenApproval();
-                        }} disabled={
-                            isLoadingApproveTokenA || 
-                            isFetchingApproveTokenA ||
-                            isLoadingApproveTokenB || 
-                            isFetchingApproveTokenB
-                        }>Approve Tokens</button>
-                    )}
-
-                <h3>Remove Liquidity</h3>
-                <Input onChange={(event) => {updateAOut(event.target.value)}} type="number" value="0.0" min="0" step="0.1" label="Token A"/>
-                <Input onChange={(event) => {updateBOut(event.target.value)}} type="number" value="0.0" min="0" step="0.1" label="Token B"/>
-                {parseFloat(lpAllowance) > 0.0 ? (
-                    <button onClick={async () => {
-                        await removeTokenLiquidity({
-                            onSuccess: handleSuccess,
-                            onError: handleFailure
-                        })
-                    }} disabled={isLoadingRemovingLiquidity || isFetchingRemovingLiquidity}>Remove Liquidity</button>
                 ) : (
-                    <button onClick={async () => {
-                        await handleLPApproval();
-                    }} disabled={isLoadingApproveLP || isFetchingApproveLP}>Approve LP Tokens</button>
+                    <div>No Swap Contract Address Detected</div>
                 )}
-                
-                <div> Token A: {tokenABalance} </div> {/* Could do more to make this dynamic by getting symbols, names etc from tokens..*/}
-                <div> Token B: {tokenBBalance} </div> 
-                <div> LP Tokens: {lpBalance}</div>
-                </div>
+            </div> 
 
-            ) : (
-                <div>No Swap Contract Address Detected</div>
-            )}
-        </div>
+                </div>
+            </div>
+            </section>
     )
 }

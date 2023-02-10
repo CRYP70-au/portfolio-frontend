@@ -8,6 +8,7 @@ import BlogLink from "../components/homepage/BlogLink"
 import Low from "./images/1.low.jpg"
 import Medium from "./images/2.medium.jpg"
 import High from "./images/3.high.jpg"
+import Dp from "./images/dp.jpg"
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,15 +17,32 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>CRYP70 - Welcome to My World</title>
+        <title>Welcome to My World</title>
         <meta name="description" content="Smart Contract to swap tokens and add liquidity" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header>
       </Header>
 
+      {/* Profile */}
       <section class="text-gray-600 body-font">
+            <div class="text-center ">
+              <div class="w-20 h-20 rounded-full inline-flex items-center justify-center bg-gray-200 text-gray-400">
+                  <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path>
+                  <Image src={Dp} alt="blog" width={0} height={0} style={{objectFit: "cover", borderRadius: "100px"}}/>
+              </div>
+              <div class="flex flex-col items-center text-center justify-center">
+                <h2 class="font-medium title-font mt-4 text-gray-900 text-lg">CRYP70</h2>
+                <div class="w-12 h-1 bg-indigo-500 rounded mt-2 mb-4"></div>
+                <p class="">
+                  Software and Security Engineer by day, breaking smart contracts by night.
+                </p>
+              </div>
+            </div>
+      </section>
 
+      {/* Findings */}
+      <section class="text-gray-600 body-font">
         <div class="container px-5 py-10 mx-auto">
         <div class="py-5">
           <h3 class="title-font font-medium text-lg text-gray-900">Publicly Disclosed Web3 Security Findings</h3>

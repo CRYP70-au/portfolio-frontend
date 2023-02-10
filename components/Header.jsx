@@ -6,30 +6,16 @@ export default function Header() {
 
 
     return(
-        // <nav className="p-5 border-b-2 flex flex-row justify-between items-center">
-        //     <h1 className="py-4 px-4 font-bold text-3xl">CRYP70 - Welcome to My World</h1>
-        //     <div className="flex flex-row items-center">
-        //         <Link href="/" className="mr-4 p-6">
-        //             Home
-        //         </Link>
-        //         <Link href="/simpleswap/liquidity" className="mr-4 p-6">
-        //             SimpleSwap
-        //         </Link>
-        //         <ConnectButton/>
-        //     </div>
-        // </nav>
-
 
         <header class="text-gray-600 body-font">
             <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
                 <a class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
-                
                 <CryptoLogos
                     chain="ethereum"
                     onClick={function noRefCheck(){}}
                     size="48px"
                 />
-                <span class="ml-3 text-xl">CRYP70 - Welcome to My World</span>
+                <span class="ml-3 text-xl">Welcome to My World</span>
                 </a>
                 <nav class="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
                     <Link className="mr-5 hover:text-gray-900" href="/">Home</Link>

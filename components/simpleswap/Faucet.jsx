@@ -73,36 +73,46 @@ export default function Faucet() {
     }
     
     return (
-        <div>
-            {tokenAAddress && tokenBAddress ? (
+        <section class="text-gray-600 body-font">
+            <div class="container mx-auto flex px-5 py-24 items-center justify-center flex-col">
+            
+
                 <div>
-                    <div
-                        style={{
-                            width: '350px'
-                        }}
-                    >
-                    <Card
-                        description={`TokenA: ${tokenAAddress}\nTokenB: ${tokenBAddress}`}
-                        onClick={function noRefCheck(){}}
-                        setIsSelected={function noRefCheck(){}}
-                        title="ERC20-Token Faucet"
-                        tooltipText="Mint 750 test tokens every 12 hours"
-                    >
+                    {tokenAAddress && tokenBAddress ? (
                         <div>
-                        <Illustration
-                            height="180px"
-                            logo="token"
-                            width="100%"
-                        />
+                            <div
+                                style={{
+                                    width: '350px'
+                                }}
+                            >
+                            <Card
+                                description={`TokenA: ${tokenAAddress}\nTokenB: ${tokenBAddress}`}
+                                onClick={function noRefCheck(){}}
+                                setIsSelected={function noRefCheck(){}}
+                                title="ERC20-Token Faucet"
+                                tooltipText="Mint 750 test tokens every 12 hours"
+                            >
+                                <div>
+                                <Illustration
+                                    height="180px"
+                                    logo="token"
+                                    width="100%"
+                                />
+                                </div>
+                            </Card>
+                            </div>
+                            <button class="flex m-auto mt-5 text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded" onClick={async () => {handleFaucetDrip()}}>Give me tokens!</button>
                         </div>
-                    </Card>
-                    </div>
-                    <button onClick={async () => {handleFaucetDrip()}}>Give me tokens!</button>
+                    ) : (
+                        <div class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">No faucet tokens found!</div>
+                    )}
                 </div>
-            ) : (
-                <div>No faucet tokens found!</div>
-            )}
-        </div>
+
+
+            
+            </div>
+        </section>
     )
 
 }
+

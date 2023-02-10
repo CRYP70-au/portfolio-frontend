@@ -260,50 +260,67 @@ export default function Swap(){
         setTokenBAllowance("1.0")
     }
 
-    return (
-        <div>
-            <h3>Swap</h3>
-            {simpleSwapAddress ? (
-                <div>
-                    {inputSwapped ? ( 
-                        <div>
-                            <Input onChange={(event) => {updateAmountAIn((event.target.value != "" ? (event.target.value) : ("0.0")))}} type="number" value="0.0" step="0.1" label="Token A" disabled={isLoadingTokenAPrice || isFetchingTokenAPrice}/>
-                            <button onClick={
-                                () => {setInputSwapped(!inputSwapped)}
-                            }>change</button>
-                            <Input onChange={(event) => {}} type="number" value={tokenAPrice} step="0.1" label="Token B"/> 
-                            <div>Min Tokens Out</div>
-                            <Input onChange={(event) => {updateMinTokenBOut(event.target.value != "" ? (event.target.value) : ("0.0"))}} value="0.0" type="number" step="0.1"/>
-                        </div>
-                    ) : (     
-                        <div>       
-                            <Input onChange={(event) => {updateAmountBIn((event.target.value != "" ? (event.target.value) : ("0.0")))}} type="number" value="0.0" step="0.1" label="Token B" disabled={isLoadingTokenBPrice || isFetchingTokenBPrice}/>
-                            <button onClick={
-                                (event) => {setInputSwapped(!inputSwapped)}
-                            }>change</button>
-                            <Input onChange={(event) => {}} type="number" value={tokenBPrice} step="0.1" label="Token A"/> 
-                            <div>Min Tokens Out</div>
-                            <Input onChange={(event) => {updateMinTokenAOut(event.target.value != "" ? (event.target.value) : ("0.0"))}} value="0.0" type="number" step="0.1"/>
 
-                        </div>
-                    )}
+    return(
+        <section class="text-gray-600 body-font">
+            <div class="container mx-auto flex px-5 py-24 items-center justify-center flex-col">
+                
+                <h3 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">Swap</h3>
+                {simpleSwapAddress ? (
+                    <div>
+                        {inputSwapped ? ( 
+                            <div>
+                                <div class="flex mb-10">
+                                    <Input  onChange={(event) => {updateAmountAIn((event.target.value != "" ? (event.target.value) : ("0.0")))}} type="number" value="0.0" step="0.1" label="Token A" disabled={isLoadingTokenAPrice || isFetchingTokenAPrice}/>
+                                </div>
+                                <button class="flex m-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"  onClick={
+                                    () => {setInputSwapped(!inputSwapped)}
+                                }>▼</button>
+                                <div class="flex mt-10">
+                                    <Input onChange={(event) => {}} type="number" value={tokenAPrice} step="0.1" label="Token B"/> 
+                                </div>
+                                <div class="flex mt-5 mb-3">Min Tokens Out</div>
+                                <div class="flex mb-3">
+                                    <Input onChange={(event) => {updateMinTokenBOut(event.target.value != "" ? (event.target.value) : ("0.0"))}} value="0.0" type="number" step="0.1"/>
+                                </div>
+                            </div>
+                        ) : (     
+                            <div>  
+                                <div class="flex mb-10">     
+                                    <Input onChange={(event) => {updateAmountBIn((event.target.value != "" ? (event.target.value) : ("0.0")))}} type="number" value="0.0" step="0.1" label="Token B" disabled={isLoadingTokenBPrice || isFetchingTokenBPrice}/>
+                                </div>
+                                <button class="flex m-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"  onClick={
+                                    (event) => {setInputSwapped(!inputSwapped)}
+                                }>▼</button>
+                                <div class="flex mt-10">
+                                    <Input onChange={(event) => {}} type="number" value={tokenBPrice} step="0.1" label="Token A"/> 
+                                </div>
+                                <div class="flex mt-5 mb-3">Min Tokens Out</div>
+                                <div class="flex mb-3">
+                                    <Input onChange={(event) => {updateMinTokenAOut(event.target.value != "" ? (event.target.value) : ("0.0"))}} value="0.0" type="number" step="0.1"/>
+                                </div>
+                            </div>
+                        )}
 
-                    {parseFloat(tokenAAllowance) > 0.0 && parseFloat(tokenBAllowance) > 0.0 ? (
-                        <button onClick={async () => {await swap({ onSuccess: handleSuccess, onError: handleFailure })}} disabled={isLoadingSwap || isFetchingSwap}>Swap</button>
-                    ) : (
-                        <button onClick={async () => {
-                            await handleTokenApproval()
-                        }} disabled={
-                            isLoadingApproveTokenA || 
-                            isFetchingApproveTokenA ||
-                            isLoadingApproveTokenB || 
-                            isFetchingApproveTokenB
-                        }>Approve Tokens</button>
-                    )}
-                </div>
-            ) : (
-                <div>No Swap Contract Address Detected</div>
-            )}
-        </div>
+                        <div class="mt-10">
+                            {parseFloat(tokenAAllowance) > 0.0 && parseFloat(tokenBAllowance) > 0.0 ? (
+                                <button class="flex m-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded" onClick={async () => {await swap({ onSuccess: handleSuccess, onError: handleFailure })}} disabled={isLoadingSwap || isFetchingSwap}>Swap</button>
+                            ) : (
+                                <button class="flex m-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded" onClick={async () => {
+                                    await handleTokenApproval()
+                                }} disabled={
+                                    isLoadingApproveTokenA || 
+                                    isFetchingApproveTokenA ||
+                                    isLoadingApproveTokenB || 
+                                    isFetchingApproveTokenB
+                                }>Approve Tokens</button>
+                            )}
+                        </div>
+                    </div>
+                ) : (
+                    <div>No Swap Contract Address Detected</div>
+                )}
+            </div>
+        </section>
     )
 }
