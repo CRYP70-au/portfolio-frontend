@@ -75,7 +75,7 @@ export default function Home() {
                 image={Medium}/>
 
               <BlogLink 
-                name="MEDIUM" 
+                name="LOW" 
                 description="Sherlock - MyCelium - Users can be rugged by the admin user" 
                 link="https://github.com/sherlock-audit/2022-10-mycelium-judging/blob/main/low-info/008-M/031.md"
                 image={Low}/>
