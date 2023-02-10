@@ -12,7 +12,7 @@ import {
     Tooltip,
     Legend,
   } from 'chart.js';
-  import { PolarArea } from 'react-chartjs-2';
+import { PolarArea } from 'react-chartjs-2';
   
 
 export default function Liquidity() {
@@ -475,6 +475,7 @@ export default function Liquidity() {
 
                 </div>
             </div>
+
             </section>
     )
 }
