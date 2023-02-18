@@ -86,6 +86,19 @@ export default function Home() {
                 link="https://github.com/sherlock-audit/2022-11-opyn-judging/blob/main/008-H/103.md"
                 image={High}/>
           </div>
+          <div class="flex flex-wrap -m-4">
+              <BlogLink 
+                name="MEDIUM (UNIQUE)" 
+                description="Sherlock - Ajna - Auction timers following liquidity can cause pool insolvency" 
+                link="https://github.com/sherlock-audit/2023-01-ajna-judging#issue-m-16-auction-timers-following-liquidity-can-fall-through-the-floor-price-causing-pool-insolvency" 
+                image={Medium}/>
+
+              <BlogLink 
+                name="MEDIUM" 
+                description="Sherlock - Ajna - Flash loans dont check pool deposit before and after" 
+                link="https://github.com/sherlock-audit/2023-01-ajna-judging/blob/main/012-M/078.md"
+                image={Medium}/>
+          </div>
         </div>
       </section>
       
