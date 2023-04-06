@@ -98,6 +98,18 @@ export default function Home() {
                 description="Sherlock - Ajna - Flash loans dont check pool deposit before and after" 
                 link="https://github.com/sherlock-audit/2023-01-ajna-judging/blob/main/012-M/078.md"
                 image={Medium}/>
+              <BlogLink 
+                name="HIGH" 
+                description="Sherlock - Olympus - Last claimed timestamp for internal rewards is not updated resulting in the theft of LDO tokens" 
+                link="https://github.com/sherlock-audit/2023-02-olympus-judging/blob/main/047-H/138-best.md"
+                image={High}/>
+          </div>
+          <div class="flex flex-wrap -m-4">
+              <BlogLink 
+                name="MEDIUM" 
+                description="Sherlock - Olympus - User rewards will be lost when a reward token is removed from the protocol" 
+                link="https://github.com/sherlock-audit/2023-02-olympus-judging/blob/main/002-M/144.md" 
+                image={Medium}/>
           </div>
         </div>
       </section>
