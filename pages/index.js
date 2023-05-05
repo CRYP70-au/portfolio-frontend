@@ -51,7 +51,7 @@ export default function Home() {
         <div class="flex flex-wrap -m-4">
               <BlogLink 
                 name="HIGH" 
-                description="Sherlock - Surge Finance - First depositor can steal funds from users by forcible depositing to the lending pool" 
+                description="Sherlock - Surge Finance - First depositor can steal funds from users by forcibly depositing to the lending pool" 
                 link="https://github.com/sherlock-audit/2023-02-surge-judging/blob/main/001-H/079.md" 
                 image={High}/>
               <BlogLink 
