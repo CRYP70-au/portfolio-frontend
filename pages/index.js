@@ -48,6 +48,40 @@ export default function Home() {
         <div class="py-5">
           <h3 class="title-font font-medium text-lg text-gray-900">Publicly Disclosed Web3 Security Findings</h3>
         </div>
+        <div class="flex flex-wrap -m-4">
+              <BlogLink 
+                name="HIGH" 
+                description="Sherlock - Surge Finance - First depositor can steal funds from users by forcible depositing to the lending pool" 
+                link="https://github.com/sherlock-audit/2023-02-surge-judging/blob/main/001-H/079.md" 
+                image={High}/>
+              <BlogLink 
+                name="HIGH" 
+                description="Sherlock - Olympus - Users can steal additional rewards after withdrawing with claimed set to true" 
+                link="https://github.com/sherlock-audit/2023-02-olympus-judging/blob/main/027-M/139-best.md" 
+                image={High}/>
+              <BlogLink 
+                name="MEDIUM" 
+                description="Sherlock - Olympus - User rewards will be lost when a reward token is removed from the protocol" 
+                link="https://github.com/sherlock-audit/2023-02-olympus-judging/blob/main/002-M/144.md" 
+                image={Medium}/>
+          </div>
+          <div class="flex flex-wrap -m-4">
+              <BlogLink 
+                name="HIGH" 
+                description="Sherlock - Olympus - Last claimed timestamp for internal rewards is not updated resulting in the theft of LDO tokens" 
+                link="https://github.com/sherlock-audit/2023-02-olympus-judging/blob/main/047-H/138-best.md"
+                image={High}/>
+              <BlogLink 
+                name="MEDIUM" 
+                description="Sherlock - Ajna - Flash loans dont check pool deposit before and after" 
+                link="https://github.com/sherlock-audit/2023-01-ajna-judging/blob/main/012-M/078.md"
+                image={Medium}/>
+              <BlogLink 
+                name="MEDIUM (UNIQUE)" 
+                description="Sherlock - Ajna - Auction timers following liquidity can cause pool insolvency" 
+                link="https://github.com/sherlock-audit/2023-01-ajna-judging#issue-m-16-auction-timers-following-liquidity-can-fall-through-the-floor-price-causing-pool-insolvency" 
+                image={Medium}/>
+          </div>
           <div class="flex flex-wrap -m-4">
               <BlogLink 
                 name="MEDIUM" 
@@ -73,7 +107,6 @@ export default function Home() {
                 description="Sherlock - MyCelium - Block future investors from receiving myLink causing a dos condition" 
                 link="https://github.com/sherlock-audit/2022-10-mycelium-judging/blob/main/029-M/035.md" 
                 image={Medium}/>
-
               <BlogLink 
                 name="LOW" 
                 description="Sherlock - MyCelium - Users can be rugged by the admin user" 
@@ -86,34 +119,8 @@ export default function Home() {
                 link="https://github.com/sherlock-audit/2022-11-opyn-judging/blob/main/008-H/103.md"
                 image={High}/>
           </div>
-          <div class="flex flex-wrap -m-4">
-              <BlogLink 
-                name="MEDIUM (UNIQUE)" 
-                description="Sherlock - Ajna - Auction timers following liquidity can cause pool insolvency" 
-                link="https://github.com/sherlock-audit/2023-01-ajna-judging#issue-m-16-auction-timers-following-liquidity-can-fall-through-the-floor-price-causing-pool-insolvency" 
-                image={Medium}/>
-
-              <BlogLink 
-                name="MEDIUM" 
-                description="Sherlock - Ajna - Flash loans dont check pool deposit before and after" 
-                link="https://github.com/sherlock-audit/2023-01-ajna-judging/blob/main/012-M/078.md"
-                image={Medium}/>
-              <BlogLink 
-                name="HIGH" 
-                description="Sherlock - Olympus - Last claimed timestamp for internal rewards is not updated resulting in the theft of LDO tokens" 
-                link="https://github.com/sherlock-audit/2023-02-olympus-judging/blob/main/047-H/138-best.md"
-                image={High}/>
-          </div>
-          <div class="flex flex-wrap -m-4">
-              <BlogLink 
-                name="MEDIUM" 
-                description="Sherlock - Olympus - User rewards will be lost when a reward token is removed from the protocol" 
-                link="https://github.com/sherlock-audit/2023-02-olympus-judging/blob/main/002-M/144.md" 
-                image={Medium}/>
-          </div>
         </div>
       </section>
-      
       <Footer/>
     </div>
 
